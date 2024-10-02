@@ -72,24 +72,9 @@ internal static class Gladiator
 
     private static void GladiatorWarpOut()
     {
-        switch (playerSlotIndex)
-        {
-            case 0:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 2, 30), new UnityEngine.Vector3(0, 0, 0));
-                break;
-            case 1:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(5, 2, 30), new UnityEngine.Vector3(0, 0, 0));
-                break;
-            case 2:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(-5, 2, 30), new UnityEngine.Vector3(0, 0, 0));
-                break;
-            case 3:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 2, 20), new UnityEngine.Vector3(0, 0, 0));
-                break;
-            default:
-                Logger.Warn("Invalid PlayerSlotIndex, not warping.");
-                break;
-        }
+        int nextPlayerSlotIndex = playerSlotIndex + 1 == PlayerManager.PlayerAgentsInLevel.Count ? 0 : playerSlotIndex + 1;
+        PlayerAgent nextPlayerAgent = PlayerManager.PlayerAgentsInLevel[nextPlayerSlotIndex];
+        localPlayerAgent.TryWarpTo(0, nextPlayerAgent.Position, nextPlayerAgent.Forward);
     }
 
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.Update))]
