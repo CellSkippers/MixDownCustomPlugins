@@ -23,7 +23,9 @@ internal static class Gladiator
 
     private static void SetupState()
     {
+#if DEBUG
         Logger.Info("Gladiator SetupState");
+#endif
         boutStartTimer = 0f;
         boutEndTimer = 0f;
         stopBoutsTimer = 0f;
@@ -39,7 +41,9 @@ internal static class Gladiator
 
     private static void ResetState()
     {
+#if DEBUG
         Logger.Info("Gladiator ResetState");
+#endif
         boutStartTimer = 0f;
         boutEndTimer = 0f;
         stopBoutsTimer = 0f;
@@ -113,7 +117,9 @@ internal static class Gladiator
         {
             if (Clock.Time > boutStartTimer)
             {
+#if DEBUG
                 Logger.Info("Trying to warp in!");
+#endif
                 GladiatorWarpIn();
                 inBout = true;
             }
@@ -123,7 +129,9 @@ internal static class Gladiator
         {
             if (Clock.Time > boutEndTimer)
             {
+#if DEBUG
                 Logger.Info("Trying to warp out!");
+#endif
                 GladiatorWarpOut();
                 inBout = false;
 
