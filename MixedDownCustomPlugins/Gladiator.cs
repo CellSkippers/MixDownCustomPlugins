@@ -7,8 +7,8 @@ namespace MixedDownCustomPlugins;
 [HarmonyPatch]
 internal static class Gladiator
 {
-    private const float STARTDELAY = 10f;
-    private const float BOUTDURATION = 20f;
+    private const float STARTDELAY = 30f;
+    private const float BOUTDURATION = 60f;
     private const float INTERMISSION = 5f;
     private const int NUMBEROFBOUTS = 8;
     private const float STOPBOUTSAFTER = STARTDELAY + NUMBEROFBOUTS * BOUTDURATION;
@@ -53,16 +53,16 @@ internal static class Gladiator
         switch (playerSlotIndex)
         {
             case 0:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 2, 20), new UnityEngine.Vector3(0, 0, 0));
+                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 360), new UnityEngine.Vector3(0, 0, 1));
                 break;
             case 1:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 2, 30), new UnityEngine.Vector3(0, 0, 0));
+                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 410), new UnityEngine.Vector3(0, 0, -1));
                 break;
             case 2:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(5, 2, 30), new UnityEngine.Vector3(0, 0, 0));
+                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(-25, 4.2f, 360), new UnityEngine.Vector3(1, 0, 1));
                 break;
             case 3:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(-5, 2, 30), new UnityEngine.Vector3(0, 0, 0));
+                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(25, 4.3f, 360), new UnityEngine.Vector3(-1, 0, 1));
                 break;
             default:
                 Logger.Warn("Invalid PlayerSlotIndex, not warping.");
