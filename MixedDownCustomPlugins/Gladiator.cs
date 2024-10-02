@@ -84,7 +84,7 @@ internal static class Gladiator
     public static void GladiatorUpdate()
     {
         // Not in the correct level. Possibly reset the state, but mostly do nothing.
-        if (GameStateManager.CurrentStateName != eGameStateName.InLevel)
+        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != "Gladiator")
         {
             if (!isReset)
             {
