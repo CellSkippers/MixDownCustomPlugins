@@ -11,10 +11,10 @@ internal static class Gladiator
     private const float BOUTDURATION = 60f;
     private const float INTERMISSION = 5f;
     private const int NUMBEROFBOUTS = 8;
-    private const float STOPBOUTSAFTER = STARTDELAY + NUMBEROFBOUTS * BOUTDURATION;
 
     private static float boutStartTimer = 0f;
     private static float boutEndTimer = 0f;
+    private static float stopBoutsTimer = 0f;
     private static bool inBout = false;
     private static bool finishedBouts = false;
     private static PlayerAgent localPlayerAgent = null;
@@ -26,6 +26,7 @@ internal static class Gladiator
         Logger.Info("Gladiator SetupState");
         boutStartTimer = 0f;
         boutEndTimer = 0f;
+        stopBoutsTimer = 0f;
         inBout = false;
         finishedBouts = false;
         if (!PlayerManager.TryGetLocalPlayerAgent(out localPlayerAgent))
@@ -41,6 +42,7 @@ internal static class Gladiator
         Logger.Info("Gladiator ResetState");
         boutStartTimer = 0f;
         boutEndTimer = 0f;
+        stopBoutsTimer = 0f;
         inBout = false;
         finishedBouts = false;
         localPlayerAgent = null;
@@ -94,8 +96,10 @@ internal static class Gladiator
         if (isReset)
         {
             SetupState();
-            boutStartTimer = Clock.Time + STARTDELAY + playerSlotIndex * BOUTDURATION;
+            float currentTime = Clock.Time;
+            boutStartTimer = currentTime + STARTDELAY + playerSlotIndex * BOUTDURATION;
             boutEndTimer = boutStartTimer + BOUTDURATION - INTERMISSION;
+            stopBoutsTimer = currentTime + STARTDELAY + (NUMBEROFBOUTS + 0.5f) * BOUTDURATION;
         }
 
         // We're in the level!
@@ -127,7 +131,7 @@ internal static class Gladiator
                 boutStartTimer = Clock.Time + INTERMISSION + (PlayerManager.PlayerAgentsInLevel.Count - 1) * BOUTDURATION;
                 boutEndTimer = boutStartTimer + BOUTDURATION - INTERMISSION;
 
-                if (boutEndTimer > STOPBOUTSAFTER)
+                if (boutEndTimer > stopBoutsTimer)
                 {
                     finishedBouts = true;
                 }
