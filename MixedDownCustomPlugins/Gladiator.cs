@@ -7,6 +7,8 @@ namespace MixedDownCustomPlugins;
 [HarmonyPatch]
 internal static class Gladiator
 {
+    private const string ENABLEDLEVEL = "Gladiator";
+
     private const float STARTDELAY = 30f;
     private const float BOUTDURATION = 75f;
     private const float INTERMISSION = 10f;
@@ -84,7 +86,7 @@ internal static class Gladiator
     public static void GladiatorUpdate()
     {
         // Not in the correct level. Possibly reset the state, but mostly do nothing.
-        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != "Gladiator")
+        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != ENABLEDLEVEL)
         {
             if (!isReset)
             {

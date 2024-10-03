@@ -11,6 +11,8 @@ namespace MixedDownCustomPlugins;
 [HarmonyPatch]
 internal static class Parry
 {
+    private const string ENABLEDLEVEL = "Gladiator";
+
     private static float tookDamageTime;
     private static pMediumDamageData lastDamageDataMedium;
     private static float shoveTime;
@@ -22,7 +24,7 @@ internal static class Parry
     public static void ParryUpdate()
     {
         // Not in the correct level, do nothing.
-        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != "Gladiator")
+        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != ENABLEDLEVEL)
         {
             return;
         }
