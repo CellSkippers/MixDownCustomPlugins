@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using System.Diagnostics;
 
 #nullable disable
 namespace MixedDownCustomPlugins;
@@ -20,4 +21,7 @@ internal static class Logger
     public static void Error(object msg) => Logger.m_LogSource.LogError((object)Logger.Format(msg));
 
     public static void Fatal(object msg) => Logger.m_LogSource.LogFatal((object)Logger.Format(msg));
+
+    [Conditional("DEBUG")]
+    public static void DebugOnly(object msg) => Logger.m_LogSource.LogInfo("DEBUG: " + (object)Logger.Format(msg));
 }
