@@ -54,23 +54,28 @@ internal static class Gladiator
 
     private static void GladiatorWarpIn()
     {
+        bool successfullyWarped = false;
         switch (playerSlotIndex)
         {
             case 0:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 360), new UnityEngine.Vector3(0, 0, 1));
+                successfullyWarped = localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 490), new UnityEngine.Vector3(0, 0, 1));
                 break;
             case 1:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 410), new UnityEngine.Vector3(0, 0, -1));
+                successfullyWarped = localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(0, 1, 530), new UnityEngine.Vector3(0, 0, -1));
                 break;
             case 2:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(-25, 4.2f, 360), new UnityEngine.Vector3(1, 0, 1));
+                successfullyWarped = localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(-20, 4.4f, 490), new UnityEngine.Vector3(1, 0, 1));
                 break;
             case 3:
-                localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(25, 4.3f, 360), new UnityEngine.Vector3(-1, 0, 1));
+                successfullyWarped = localPlayerAgent.TryWarpTo(0, new UnityEngine.Vector3(20, 4.4f, 490), new UnityEngine.Vector3(-1, 0, 1));
                 break;
             default:
                 Logger.Warn("Invalid PlayerSlotIndex, not warping.");
                 break;
+        }
+        if (!successfullyWarped)
+        {
+            Logger.Warn("Warp location for PlayerSlotIndex " + playerSlotIndex + " was invalid.");
         }
     }
 
@@ -78,7 +83,18 @@ internal static class Gladiator
     {
         int nextPlayerSlotIndex = playerSlotIndex + 1 == PlayerManager.PlayerAgentsInLevel.Count ? 0 : playerSlotIndex + 1;
         PlayerAgent nextPlayerAgent = PlayerManager.PlayerAgentsInLevel[nextPlayerSlotIndex];
-        localPlayerAgent.TryWarpTo(0, nextPlayerAgent.Position, nextPlayerAgent.Forward);
+        while (nextPlayerSlotIndex != playerSlotIndex)
+        {
+            // Try to warp out to the next player.
+            if (localPlayerAgent.TryWarpTo(0, nextPlayerAgent.Position, nextPlayerAgent.Forward))
+            {
+                return;
+            }
+            // If it doesn't work, try the next player.
+            nextPlayerSlotIndex = nextPlayerSlotIndex + 1 == PlayerManager.PlayerAgentsInLevel.Count ? 0 : nextPlayerSlotIndex + 1;
+            nextPlayerAgent = PlayerManager.PlayerAgentsInLevel[nextPlayerSlotIndex];
+        }
+        Logger.Warn("No valid warp out found!");
     }
 
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.Update))]
