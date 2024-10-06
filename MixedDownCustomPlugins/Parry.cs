@@ -13,6 +13,8 @@ internal static class Parry
 {
     private const string ENABLEDLEVEL = "Gladiator";
 
+    private const float PARRYDURATION = 0.3f;
+
     private static float tookDamageTime;
     private static pMediumDamageData lastDamageDataMedium;
     private static float shoveTime;
@@ -29,7 +31,7 @@ internal static class Parry
             return;
         }
 
-        if ((double)(tookDamageTime - shoveTime) > 0.0 && (double)(tookDamageTime - shoveTime) < 0.3)
+        if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
             parrySuccess = true;
             PlayerAgent localPlayerAgent = PlayerManager.GetLocalPlayerAgent();
@@ -62,7 +64,7 @@ internal static class Parry
         lastDamageDataMedium = data;
         tookDamageTime = Time.time;
         lastAgentDamage = lastAgentDamage;
-        if ((tookDamageTime - shoveTime > 0f) && (tookDamageTime - shoveTime < 0.3f))
+        if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
             return false;
         }
@@ -78,7 +80,7 @@ internal static class Parry
         lastDamageDataMedium = data;
         tookDamageTime = Time.time;
         lastAgentDamage = lastAgentDamage;
-        if ((tookDamageTime - shoveTime > 0f) && (tookDamageTime - shoveTime < 0.3f))
+        if (tookDamageTime - shoveTime > 0f && tookDamageTime - shoveTime < PARRYDURATION)
         {
             return false;
         }
