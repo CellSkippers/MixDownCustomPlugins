@@ -36,7 +36,7 @@ internal static class Parry
             parrySuccess = true;
             PlayerAgent localPlayerAgent = PlayerManager.GetLocalPlayerAgent();
             localPlayerAgent.GiveHealth(localPlayerAgent, ((UFloat16)(lastMediumDamageData.damage)).Get(9999f) * 0.01f);
-            if ((UnityEngine.Object)(object)lastDamagingAgent != (UnityEngine.Object)null)
+            if (lastDamagingAgent != null)
             {
                 DamageUtil.DoExplosionDamage(lastDamagingAgent.Position, 2f, 100f, LayerManager.MASK_EXPLOSION_TARGETS, LayerManager.MASK_EXPLOSION_BLOCKERS, true, 1500f);
             }
@@ -76,7 +76,7 @@ internal static class Parry
         lastMediumDamageData = data;
         tookDamageTime = Clock.Time;
         lastDamagingAgent = damagingAgent;
-        if (tookDamageTime - shoveTime > 0f && tookDamageTime - shoveTime < PARRYDURATION)
+        if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
             return false;
         }
