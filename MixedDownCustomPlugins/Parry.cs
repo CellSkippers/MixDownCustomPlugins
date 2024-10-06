@@ -16,9 +16,9 @@ internal static class Parry
     private const float PARRYDURATION = 0.3f;
 
     private static float tookDamageTime;
-    private static pMediumDamageData lastDamageDataMedium;
+    private static pMediumDamageData lastMediumDamageData;
     private static float shoveTime;
-    private static Agent lastAgentDamage;
+    private static Agent lastDamagingAgent;
     private static bool parrySuccess;
 
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.Update))]
@@ -35,13 +35,12 @@ internal static class Parry
         {
             parrySuccess = true;
             PlayerAgent localPlayerAgent = PlayerManager.GetLocalPlayerAgent();
-            localPlayerAgent.GiveHealth(localPlayerAgent, ((UFloat16)(/*ref*/ lastDamageDataMedium.damage)).Get(9999f) * 0.01f);
-            if ((UnityEngine.Object)(object)lastAgentDamage != (UnityEngine.Object)null)
+            localPlayerAgent.GiveHealth(localPlayerAgent, ((UFloat16)(lastMediumDamageData.damage)).Get(9999f) * 0.01f);
+            if ((UnityEngine.Object)(object)lastDamagingAgent != (UnityEngine.Object)null)
             {
-                DamageUtil.DoExplosionDamage(lastAgentDamage.Position, 2f, 100f, LayerManager.MASK_EXPLOSION_TARGETS, LayerManager.MASK_EXPLOSION_BLOCKERS, true, 1500f);
+                DamageUtil.DoExplosionDamage(lastDamagingAgent.Position, 2f, 100f, LayerManager.MASK_EXPLOSION_TARGETS, LayerManager.MASK_EXPLOSION_BLOCKERS, true, 1500f);
             }
             //mSoundPlayer.Post("Parry", true);
-            //Debug.Log(Object.op_Implicit((Object)(object)LastAgentDamage == (Object)null));
             shoveTime = -11f;
             parrySuccess = false;
         }
@@ -58,12 +57,10 @@ internal static class Parry
     [HarmonyPrefix]
     public static bool ParryShooterProjectileDamage(pMediumDamageData data)
     {
-        Agent lastAgentDamage = default(Agent);
-        ((pAgent)(/*ref*/ data.source)).TryGet(/*ref*/ out lastAgentDamage);
-        //Debug.Log(Object.op_Implicit("Took shooter damage"));
-        lastDamageDataMedium = data;
+        data.source.TryGet(out Agent damagingAgent);
+        lastMediumDamageData = data;
         tookDamageTime = Clock.Time;
-        lastAgentDamage = lastAgentDamage;
+        lastDamagingAgent = damagingAgent;
         if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
             return false;
@@ -75,11 +72,10 @@ internal static class Parry
     [HarmonyPrefix]
     public static bool ParryTentacleAttackDamage(pMediumDamageData data)
     {
-        Agent lastAgentDamage;
-        ((pAgent)(/*ref*/ data.source)).TryGet(out lastAgentDamage);
-        lastDamageDataMedium = data;
+        data.source.TryGet(out Agent damagingAgent);
+        lastMediumDamageData = data;
         tookDamageTime = Clock.Time;
-        lastAgentDamage = lastAgentDamage;
+        lastDamagingAgent = damagingAgent;
         if (tookDamageTime - shoveTime > 0f && tookDamageTime - shoveTime < PARRYDURATION)
         {
             return false;
