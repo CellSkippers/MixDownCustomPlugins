@@ -62,7 +62,7 @@ internal static class Parry
         ((pAgent)(/*ref*/ data.source)).TryGet(/*ref*/ out lastAgentDamage);
         //Debug.Log(Object.op_Implicit("Took shooter damage"));
         lastDamageDataMedium = data;
-        tookDamageTime = Time.time;
+        tookDamageTime = Clock.Time;
         lastAgentDamage = lastAgentDamage;
         if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
@@ -78,7 +78,7 @@ internal static class Parry
         Agent lastAgentDamage;
         ((pAgent)(/*ref*/ data.source)).TryGet(out lastAgentDamage);
         lastDamageDataMedium = data;
-        tookDamageTime = Time.time;
+        tookDamageTime = Clock.Time;
         lastAgentDamage = lastAgentDamage;
         if (tookDamageTime - shoveTime > 0f && tookDamageTime - shoveTime < PARRYDURATION)
         {
