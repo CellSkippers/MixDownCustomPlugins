@@ -10,8 +10,8 @@ internal static class Gladiator
     private const string ENABLEDLEVEL = "Gladiator";
 
     private const float STARTDELAY = 30f;
-    private const float BOUTDURATION = 75f;
-    private const float INTERMISSION = 10f;
+    private const float BOUTDURATION = 60f;
+    private const float INTERMISSION = 5f;
     private const int NUMBEROFBOUTS = 8;
 
     private static float boutStartTimer = 0f;
