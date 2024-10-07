@@ -2,8 +2,6 @@
 using Gear;
 using HarmonyLib;
 using Player;
-using SNetwork;
-using UnityEngine;
 
 #nullable disable
 namespace MixedDownCustomPlugins;
@@ -15,35 +13,30 @@ internal static class Parry
 
     private const float PARRYDURATION = 0.3f;
 
-    private static float tookDamageTime;
-    private static pMediumDamageData lastMediumDamageData;
     private static float shoveTime;
-    private static Agent lastDamagingAgent;
-    private static bool parrySuccess;
 
-    [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.Update))]
-    [HarmonyPostfix]
-    public static void ParryUpdate()
+    // Return value is used by the relevant receive damage prefix to determine whether the original receive damage method should run.
+    private static bool SuccessfullyParry(pMediumDamageData damageData)
     {
-        // Not in the correct level, do nothing.
-        if (GameStateManager.CurrentStateName != eGameStateName.InLevel || RundownManager.ActiveExpedition.Descriptive.PublicName != ENABLEDLEVEL)
+        if (RundownManager.ActiveExpedition.Descriptive.PublicName != ENABLEDLEVEL)
         {
-            return;
+            // Wrong level, do nothing and run the original receive damage method.
+            return true;
         }
 
-        if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
+        // Heal the player.
+        PlayerAgent localPlayerAgent = PlayerManager.GetLocalPlayerAgent();
+        localPlayerAgent.GiveHealth(localPlayerAgent, damageData.damage.Get(9999f) * 0.01f);
+
+        // Explode the enemy.
+        damageData.source.TryGet(out Agent damagingAgent);
+        if (damagingAgent != null)
         {
-            parrySuccess = true;
-            PlayerAgent localPlayerAgent = PlayerManager.GetLocalPlayerAgent();
-            localPlayerAgent.GiveHealth(localPlayerAgent, ((UFloat16)(lastMediumDamageData.damage)).Get(9999f) * 0.01f);
-            if (lastDamagingAgent != null)
-            {
-                DamageUtil.DoExplosionDamage(lastDamagingAgent.Position, 2f, 100f, LayerManager.MASK_EXPLOSION_TARGETS, LayerManager.MASK_EXPLOSION_BLOCKERS, true, 1500f);
-            }
-            //mSoundPlayer.Post("Parry", true);
-            shoveTime = -11f;
-            parrySuccess = false;
+            DamageUtil.DoExplosionDamage(damagingAgent.Position, 2f, 100f, LayerManager.MASK_EXPLOSION_TARGETS, LayerManager.MASK_EXPLOSION_BLOCKERS, true, 1500f);
         }
+
+        // Don't run the original receive damage method - player doesn't take the damage.
+        return false;
     }
 
     [HarmonyPatch(typeof(MWS_Push), nameof(MWS_Push.Enter))]
@@ -57,13 +50,10 @@ internal static class Parry
     [HarmonyPrefix]
     public static bool ParryShooterProjectileDamage(pMediumDamageData data)
     {
-        data.source.TryGet(out Agent damagingAgent);
-        lastMediumDamageData = data;
-        tookDamageTime = Clock.Time;
-        lastDamagingAgent = damagingAgent;
+        float tookDamageTime = Clock.Time;
         if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
-            return false;
+            return SuccessfullyParry(data);
         }
         return true;
     }
@@ -72,13 +62,10 @@ internal static class Parry
     [HarmonyPrefix]
     public static bool ParryTentacleAttackDamage(pMediumDamageData data)
     {
-        data.source.TryGet(out Agent damagingAgent);
-        lastMediumDamageData = data;
-        tookDamageTime = Clock.Time;
-        lastDamagingAgent = damagingAgent;
+        float tookDamageTime = Clock.Time;
         if (tookDamageTime > shoveTime && tookDamageTime - shoveTime < PARRYDURATION)
         {
-            return false;
+            return SuccessfullyParry(data);
         }
         return true;
     }
