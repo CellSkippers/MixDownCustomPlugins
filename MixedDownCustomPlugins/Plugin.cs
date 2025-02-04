@@ -7,7 +7,7 @@ namespace MixedDownCustomPlugins;
 [BepInPlugin(GUID, MODNAME, VERSION)]
 public class Plugin : BasePlugin
 {
-    internal const string AUTHOR = "tru0067";
+    internal const string AUTHOR = "CellSkippers";
     internal const string MODNAME = "MixedDownCustomPlugins";
     internal const string GUID = AUTHOR + "." + MODNAME;
     internal const string MODNAMESPACE = "MixedDownCustomPlugins";
