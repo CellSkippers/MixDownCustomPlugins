@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 
 namespace MixedDownCustomPlugins;
 
@@ -17,6 +18,7 @@ public class Plugin : BasePlugin
     {
         Logger.SetupFromInit(this.Log);
         Logger.Info(MODNAME + " is loading...");
+        ClassInjector.RegisterTypeInIl2Cpp<Gladiator>();
         new Harmony(GUID).PatchAll();
         Logger.Info(MODNAME + " loaded!");
     }
