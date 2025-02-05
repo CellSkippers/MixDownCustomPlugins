@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime.Injection;
 namespace MixedDownCustomPlugins;
 
 [BepInPlugin(GUID, MODNAME, VERSION)]
+[BepInDependency("CellSkippers.Parry", BepInDependency.DependencyFlags.HardDependency)]
 public class Plugin : BasePlugin
 {
     internal const string AUTHOR = "CellSkippers";

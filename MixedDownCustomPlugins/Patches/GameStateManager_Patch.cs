@@ -41,10 +41,12 @@ namespace MixedDownCustomPlugins.Patches
             if (startingLevel && activeExpedition.tier == eRundownTier.TierB && activeExpedition.expeditionIndex == 1)
             {
                 GladiatorWarpLoop.Enable();
+                Parry.Patch.parryEnabled = true;
             }
             else
             {
                 GladiatorWarpLoop.Disable();
+                Parry.Patch.parryEnabled = false;
             }
         }
     }
