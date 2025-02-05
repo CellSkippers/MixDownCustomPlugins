@@ -40,11 +40,11 @@ namespace MixedDownCustomPlugins.Patches
             // B2
             if (startingLevel && activeExpedition.tier == eRundownTier.TierB && activeExpedition.expeditionIndex == 1)
             {
-                Gladiator.Enable();
+                GladiatorWarpLoop.Enable();
             }
             else
             {
-                Gladiator.Disable();
+                GladiatorWarpLoop.Disable();
             }
         }
     }

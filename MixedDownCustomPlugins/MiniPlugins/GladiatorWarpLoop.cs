@@ -4,7 +4,7 @@ using UnityEngine;
 #nullable disable
 namespace MixedDownCustomPlugins;
 
-internal class Gladiator : MonoBehaviour
+internal class GladiatorWarpLoop : MonoBehaviour
 {
     private const float STARTDELAY = 30f;    // Time before bouts first start.
     private const float BOUTDURATION = 60f;  // Total time between bouts.
@@ -23,15 +23,15 @@ internal class Gladiator : MonoBehaviour
     public static void Enable()
     {
         Logger.DebugOnly("Gladiator Enable");
-        if (PlayerManager.Current.gameObject.GetComponent<Gladiator>() == null)
-            PlayerManager.Current.gameObject.AddComponent<Gladiator>();
+        if (PlayerManager.Current.gameObject.GetComponent<GladiatorWarpLoop>() == null)
+            PlayerManager.Current.gameObject.AddComponent<GladiatorWarpLoop>();
     }
 
     public static void Disable()
     {
         Logger.DebugOnly("Gladiator Disable");
-        if (PlayerManager.Current?.gameObject?.GetComponent<Gladiator>() != null)
-            Destroy(PlayerManager.Current.gameObject.GetComponent<Gladiator>());
+        if (PlayerManager.Current?.gameObject?.GetComponent<GladiatorWarpLoop>() != null)
+            Destroy(PlayerManager.Current.gameObject.GetComponent<GladiatorWarpLoop>());
     }
 
     public void Start()

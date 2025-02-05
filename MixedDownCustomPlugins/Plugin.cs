@@ -18,7 +18,7 @@ public class Plugin : BasePlugin
     {
         Logger.SetupFromInit(this.Log);
         Logger.Info(MODNAME + " is loading...");
-        ClassInjector.RegisterTypeInIl2Cpp<Gladiator>();
+        ClassInjector.RegisterTypeInIl2Cpp<GladiatorWarpLoop>();
         new Harmony(GUID).PatchAll();
         Logger.Info(MODNAME + " loaded!");
     }
