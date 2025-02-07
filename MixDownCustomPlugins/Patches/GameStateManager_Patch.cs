@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace MixedDownCustomPlugins.Patches
+namespace MixDownCustomPlugins.Patches
 {
     [HarmonyPatch]
     internal class GameStateManager_Patch

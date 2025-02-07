@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace MixedDownCustomPlugins.Patches
+namespace MixDownCustomPlugins.Patches
 {
     [HarmonyPatch]
     internal class SurvivalWave_Patch

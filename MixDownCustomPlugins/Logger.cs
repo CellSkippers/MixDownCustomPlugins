@@ -2,7 +2,7 @@
 using System.Diagnostics;
 
 #nullable disable
-namespace MixedDownCustomPlugins;
+namespace MixDownCustomPlugins;
 
 internal static class Logger
 {

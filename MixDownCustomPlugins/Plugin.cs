@@ -3,16 +3,15 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 
-namespace MixedDownCustomPlugins;
+namespace MixDownCustomPlugins;
 
 [BepInPlugin(GUID, MODNAME, VERSION)]
 [BepInDependency("CellSkippers.Parry", BepInDependency.DependencyFlags.HardDependency)]
 public class Plugin : BasePlugin
 {
     internal const string AUTHOR = "CellSkippers";
-    internal const string MODNAME = "MixedDownCustomPlugins";
+    internal const string MODNAME = "MixDownCustomPlugins";
     internal const string GUID = AUTHOR + "." + MODNAME;
-    internal const string MODNAMESPACE = "MixedDownCustomPlugins";
     internal const string VERSION = "1.0.0";
 
     public override void Load()

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 #nullable disable
-namespace MixedDownCustomPlugins;
+namespace MixDownCustomPlugins;
 
 internal class GladiatorWarpLoop : MonoBehaviour
 {
